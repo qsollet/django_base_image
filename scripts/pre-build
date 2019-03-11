@@ -1,0 +1,17 @@
+#!/bin/sh
+
+main() {
+    # TODO run script `/src/pre-build` if executable
+    if [ -f /src/pre-build ]; then
+        if [ ! -x /src/pre-build ]; then
+            echo "WARNING: Script /src/pre-build not executable."
+        fi
+    fi
+
+    if [ -x /src/pre-build ]; then
+        echo " -----> Running /src/pre-build"
+        /src/pre-build
+    fi
+}
+
+main "$@"

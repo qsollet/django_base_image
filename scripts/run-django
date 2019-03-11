@@ -1,0 +1,14 @@
+#!/bin/sh
+
+main() {
+    # Run pre-run user scripts if any
+    pre-run
+    # Run migrate command (need database defined)
+    python manage.py migrate
+    # Run Collect static (need a mounted volume on `/static`)
+    python manage.py collectstatic --no-input --clear
+    # Run Gunicorn
+    gunicorn app.wsgi:application -w $GUNICORN_WORKER --bind=$GUNICORN_BIND_IP:$GUNICORN_BIND_PORT
+}
+
+main "$@"

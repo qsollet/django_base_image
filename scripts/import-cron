@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# main() {
+#     # TODO import `cronjob` if the file exists
+# }
+#
+# main "$@"

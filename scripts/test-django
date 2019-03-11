@@ -1,0 +1,9 @@
+#!/bin/sh
+
+main() {
+    # TODO overide database default to use sqlite
+    # Run Django tests
+    python manage.py test
+}
+
+main "$@"
