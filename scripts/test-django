@@ -1,7 +1,12 @@
 #!/bin/sh
 
 main() {
-    # TODO overide database default to use sqlite
+    # Load test settings
+    if [ -f test.env ]; then
+        set -a
+        source test.env
+        set +a
+    fi
     # Run Django tests
     python manage.py test
 }

@@ -1,7 +1,13 @@
 #!/bin/sh
 
-# main() {
-#     # TODO import `cronjob` if the file exists
-# }
-#
-# main "$@"
+main() {
+    if [ -f /src/cronjob ]; then
+        echo " ---> Importing cronjob"
+        crontab -l > /tmp/tmpcron.txt
+        cat /src/cronjob >> /tmp/tmpcron.txt
+        crontab /tmp/tmpcron.txt
+        rm /tmp/tmpcron.txt
+    fi
+}
+
+main "$@"

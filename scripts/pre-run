@@ -1,7 +1,16 @@
 #!/bin/sh
 
-# main() {
-#     # TODO run script `/src/pre-run` if executable
-# }
-#
-# main "$@"
+main() {
+    if [ -f /src/pre-run ]; then
+        if [ ! -x /src/pre-run ]; then
+            echo "WARNING: Script pre-run not executable."
+        fi
+    fi
+
+    if [ -x /src/pre-run ]; then
+        echo " ---> Running pre-run"
+        /bin/sh /src/pre-run
+    fi
+}
+
+main "$@"
