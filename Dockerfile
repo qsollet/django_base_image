@@ -1,25 +1,28 @@
-FROM python:3.6-alpine
+FROM python:3.6-slim
 
-MAINTAINER quentin@sollet.fr
-
-RUN apk update
-RUN apk add postgresql-libs
-RUN apk add --virtual .build-deps gcc musl-dev postgresql-dev
-RUN pip install --no-cache-dir psycopg2-binary gunicorn
-RUN apk --purge del .build-deps
+LABEL maintainer=quentin@sollet.fr
 
 COPY scripts/* /usr/local/bin/
 
+RUN addgroup appgroup && adduser --ingroup appgroup appuser
+USER appuser
+RUN mkdir /home/appuser/src && mkdir /home/appuser/static && mkdir /home/appuser/media && mkdir /home/appuser/data
+ENV PATH="/home/appuser/.local/bin:${PATH}"
+
 ENV GUNICORN_BIND_IP 0.0.0.0
-ENV GUNICORN_BIND_PORT 80
+ENV GUNICORN_BIND_PORT 8080
 ENV GUNICORN_WORKER 2
 
-ONBUILD WORKDIR /src
-ONBUILD COPY . /src
+ENV STATIC_ROOT /home/appuser/static
+ENV MEDIA_ROOT /home/appuser/media
+ENV DATA_ROOT /home/appuser/data
+
+ONBUILD WORKDIR /home/appuser/src
+ONBUILD COPY . /home/appuser/src
 ONBUILD RUN pre-build
 ONBUILD RUN import-cron
-ONBUILD RUN pip install -r requirements.txt
+ONBUILD RUN pip install --user gunicorn && pip install --user -r requirements.txt
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["run-django"]
