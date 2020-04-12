@@ -7,7 +7,7 @@ COPY scripts/* /usr/local/bin/
 RUN useradd --create-home --shell /bin/bash appuser
 USER appuser
 ENV PATH="/home/appuser/.local/bin:${PATH}"
-RUN mkdir /home/appuser/src && mkdir /home/appuser/static && mkdir /home/appuser/media && mkdir ~/data
+RUN mkdir /home/appuser/src && mkdir /home/appuser/static && mkdir /home/appuser/media && mkdir /home/appuser/data
 
 ENV GUNICORN_BIND_IP 0.0.0.0
 ENV GUNICORN_BIND_PORT 8080
